@@ -3,11 +3,14 @@ package dev.guilhermeluan.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Date;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Getter
 @Setter
+@Builder
 
 @Entity
 public class Tarefa {
@@ -20,7 +23,9 @@ public class Tarefa {
     private String nomeTarefa;
     @Column(nullable = false)
     private Double custo;
+    private Date dataLimite;
     @Column(unique = true, nullable = false)
     private Integer ordemApresentacao;
+
 }
 
