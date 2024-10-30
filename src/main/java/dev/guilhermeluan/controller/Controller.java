@@ -1,7 +1,8 @@
 package dev.guilhermeluan.controller;
 
-import dev.guilhermeluan.domain.Tarefa;
+import dev.guilhermeluan.dtos.TarefaGetResponse;
 import dev.guilhermeluan.service.TarefaService;
+import dev.guilhermeluan.utils.TarefaMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,10 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/v1/tarefas")
 public class Controller {
     private final TarefaService service;
+    private final TarefaMapper mapper;
 
     @GetMapping
-    public ResponseEntity<Page<Tarefa>> findAll(Pageable pageable) {
-        Page<Tarefa> response = service.findAll(pageable);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<Page<TarefaGetResponse>> findAll(Pageable pageable) {
+
+        Page<TarefaGetResponse> responses = service.findAll(pageable).map(mapper::toTarefaGetResponse);
+        return ResponseEntity.ok(responses);
     }
 }

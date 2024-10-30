@@ -24,7 +24,7 @@ public class DBRunner implements CommandLineRunner {
                         .nomeTarefa("Planejar projeto")
                         .custo(130.50)
                         .dataLimite(Date.valueOf("2024-11-10"))
-                        .ordemApresentacao(1)
+                        .ordemApresentacao(9)
                         .build(),
 
                 Tarefa.builder()
@@ -80,7 +80,7 @@ public class DBRunner implements CommandLineRunner {
                         .nomeTarefa("Entrega do projeto")
                         .custo(20.00)
                         .dataLimite(Date.valueOf("2024-12-10"))
-                        .ordemApresentacao(9)
+                        .ordemApresentacao(1)
                         .build()
 
         ));
