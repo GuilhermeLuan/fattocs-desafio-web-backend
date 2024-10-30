@@ -42,11 +42,11 @@ public class TarefaService {
     }
 
     public void delete(Long id) {
-        assertTarefaExist(id);
+        assertTarefaExists(id);
         repository.deleteById(id);
     }
 
-    public void assertTarefaExist(Long id) {
+    public void assertTarefaExists(Long id) {
         findByIdOrThrowBadRequestException(id);
     }
 

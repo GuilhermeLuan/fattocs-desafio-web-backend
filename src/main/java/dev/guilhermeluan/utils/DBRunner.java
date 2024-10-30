@@ -18,7 +18,7 @@ public class DBRunner implements CommandLineRunner {
     private final TarefaRepository repository;
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         repository.saveAll(List.of(
                 Tarefa.builder()
                         .nomeTarefa("Planejar projeto")

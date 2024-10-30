@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/v1/tarefas")
-public class Controller {
+public class TarefaController {
     private final TarefaService service;
     private final TarefaMapper mapper;
 
@@ -27,7 +27,7 @@ public class Controller {
     public ResponseEntity<Page<TarefaGetResponse>> findAll(Pageable pageable) {
 
         Page<TarefaGetResponse> responses = service.findAll(pageable).map(mapper::toTarefaGetResponse);
-        return ResponseEntity.ok(responses);
+        return ResponseEntity.status(HttpStatus.OK).body(responses);
     }
 
     @PostMapping
@@ -46,6 +46,13 @@ public class Controller {
         Tarefa tarefaToUpdate = mapper.toTarefa(request);
 
         service.update(tarefaToUpdate);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.delete(id);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
