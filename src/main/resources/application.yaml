@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: sistema-lista-tarefa
+  datasource:
+      url: jdbc:mysql://localhost:3333/lista_tarefa?userTimezone=true&serverTimezone=UTC&createDatabaseIfNotExist=true
+      username: root
+      password: admin
+  jpa:
+      show-sql: true
+      hibernate:
+        ddl-auto: update
+  threads:
+      virtual:
+        enabled: true
