@@ -5,7 +5,9 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
 
-public record TarefaPostRequest(
+public record TarefaPutRequest(
+        @NotNull(message = "O campo 'id' é necessario")
+        Long id,
         @NotBlank(message = "O campo 'nomeTarefa' é necessario")
         String nomeTarefa,
         @NotNull(message = "O campo 'custo' é necessario")

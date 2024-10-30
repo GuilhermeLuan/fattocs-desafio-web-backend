@@ -35,9 +35,10 @@ public class TarefaService {
         return repository.save(tarefa);
     }
 
-    public void update(Tarefa tarefa) {
-        assertTarefaExist(tarefa.getId());
-        repository.save(tarefa);
+    public void update(Tarefa tarefaToUpdate) {
+        Tarefa tarefaFound = findByIdOrThrowBadRequestException(tarefaToUpdate.getId());
+        tarefaToUpdate.setOrdemApresentacao(tarefaFound.getOrdemApresentacao());
+        repository.save(tarefaToUpdate);
     }
 
     public void delete(Long id) {

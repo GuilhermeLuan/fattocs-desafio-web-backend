@@ -2,7 +2,7 @@ package dev.guilhermeluan.dtos;
 
 import java.util.Date;
 
-public record TarefaGetResponse (
+public record TarefaGetResponse(
         Long id,
         String nomeTarefa,
         Double custo,

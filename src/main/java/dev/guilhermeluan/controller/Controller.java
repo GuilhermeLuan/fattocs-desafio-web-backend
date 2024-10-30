@@ -4,6 +4,7 @@ import dev.guilhermeluan.domain.Tarefa;
 import dev.guilhermeluan.dtos.TarefaGetResponse;
 import dev.guilhermeluan.dtos.TarefaPostRequest;
 import dev.guilhermeluan.dtos.TarefaPostResponse;
+import dev.guilhermeluan.dtos.TarefaPutRequest;
 import dev.guilhermeluan.service.TarefaService;
 import dev.guilhermeluan.utils.TarefaMapper;
 import jakarta.validation.Valid;
@@ -39,4 +40,14 @@ public class Controller {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
+    @PutMapping
+    public ResponseEntity<Void> update(@RequestBody @Valid TarefaPutRequest request) {
+        Tarefa tarefaToUpdate = mapper.toTarefa(request);
+
+        service.update(tarefaToUpdate);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
 }
