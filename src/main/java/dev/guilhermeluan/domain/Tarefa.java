@@ -23,6 +23,7 @@ public class Tarefa {
     private String nomeTarefa;
     @Column(nullable = false)
     private Double custo;
+    @Column(nullable = false)
     private Date dataLimite;
     @Column(unique = true, nullable = false)
     private Integer ordemApresentacao;

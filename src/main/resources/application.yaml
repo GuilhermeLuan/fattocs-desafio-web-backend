@@ -12,3 +12,16 @@ spring:
   threads:
       virtual:
         enabled: true
+
+logging:
+  level:
+    dev.guilhermeluan: debug
+server:
+  port: 8080
+  servlet:
+    context-path: /
+  error:
+    include-stacktrace: on_param
+  tomcat:
+    threads:
+      max: 20
