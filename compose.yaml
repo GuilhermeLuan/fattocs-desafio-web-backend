@@ -6,7 +6,7 @@ services:
       MYSQL_USER: tarefa
       MYSQL_PASSWORD: admin
     ports:
-      - "w:3306"
+      - "3333:3306"
     volumes:
       - lista-tarefa-db:/var/lib/mysql
 

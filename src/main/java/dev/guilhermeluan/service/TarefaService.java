@@ -18,13 +18,13 @@ public class TarefaService {
     private final TarefaRepository repository;
 
     @PersistenceContext
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     public Page<Tarefa> findAll(Pageable pageable) {
         return repository.findAll(pageable);
     }
 
-    public Tarefa findByIdOrThrowBadRequestException(Long id) {
+    public Tarefa findByIdOrThrowNotFound(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Tarefa não foi encontrada!"));
     }
@@ -36,7 +36,7 @@ public class TarefaService {
     }
 
     public void update(Tarefa tarefaToUpdate) {
-        Tarefa tarefaFound = findByIdOrThrowBadRequestException(tarefaToUpdate.getId());
+        Tarefa tarefaFound = findByIdOrThrowNotFound(tarefaToUpdate.getId());
         tarefaToUpdate.setOrdemApresentacao(tarefaFound.getOrdemApresentacao());
         repository.save(tarefaToUpdate);
     }
@@ -47,7 +47,7 @@ public class TarefaService {
     }
 
     public void assertTarefaExists(Long id) {
-        findByIdOrThrowBadRequestException(id);
+        findByIdOrThrowNotFound(id);
     }
 
     @Transactional
