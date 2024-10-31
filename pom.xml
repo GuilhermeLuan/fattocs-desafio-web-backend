@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>dev.guilhermeluan</groupId>
-    <artifactId>sistema-lista-tarefa</artifactId>
+    <artifactId>sistema-lista-task</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>sistema-lista-tarefa</name>
-    <description>sistema-lista-tarefa</description>
+    <name>sistema-lista-task</name>
+    <description>sistema-lista-task</description>
     <url/>
     <licenses>
         <license/>

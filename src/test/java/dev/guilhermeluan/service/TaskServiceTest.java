@@ -1,7 +1,7 @@
 package dev.guilhermeluan.service;
 
-import dev.guilhermeluan.domain.Tarefa;
-import dev.guilhermeluan.repository.TarefaRepository;
+import dev.guilhermeluan.domain.Task;
+import dev.guilhermeluan.repository.TaskRepository;
 import dev.guilhermeluan.utils.TarefaUtils;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
@@ -25,15 +25,15 @@ import static org.mockito.Mockito.mock;
 
 
 @ExtendWith(MockitoExtension.class)
-class TarefaServiceTest {
+class TaskServiceTest {
 
     @InjectMocks
-    private TarefaService service;
+    private TaskService service;
     @Mock
-    private TarefaRepository repository;
+    private TaskRepository repository;
     @Mock
     private EntityManager entityManager;
-    private List<Tarefa> tarefasList;
+    private List<Task> tarefasList;
     @Spy
     private TarefaUtils tarefasUtils;
 
@@ -46,7 +46,7 @@ class TarefaServiceTest {
     @DisplayName("findAll returns a paginated list of tarefas")
     void findAll_ReturnsPaginatedTarefa_WhenSuccessful() {
         var pageRequest = PageRequest.of(0, tarefasList.size());
-        var pageTarefa = new PageImpl<Tarefa>(tarefasList, pageRequest, 1);
+        var pageTarefa = new PageImpl<Task>(tarefasList, pageRequest, 1);
 
         BDDMockito.when(repository.findAll(BDDMockito.any(Pageable.class))).thenReturn(pageTarefa);
 
@@ -119,7 +119,7 @@ class TarefaServiceTest {
     @DisplayName("update updates an tarefa")
     void update_UpdatesTarefa_WhenSuccessful() {
         var tarefaToUpdate = tarefasList.getFirst();
-        tarefaToUpdate.setNomeTarefa("Novo Nome Tarefa");
+        tarefaToUpdate.setTaskName("Novo Nome Tarefa");
 
         BDDMockito.when(repository.findById(tarefaToUpdate.getId())).thenReturn(Optional.of(tarefaToUpdate));
         BDDMockito.when(repository.save(tarefaToUpdate)).thenReturn(tarefaToUpdate);

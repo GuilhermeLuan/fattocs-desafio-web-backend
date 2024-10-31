@@ -1,7 +1,7 @@
 package dev.guilhermeluan.utils;
 
-import dev.guilhermeluan.domain.Tarefa;
-import dev.guilhermeluan.repository.TarefaRepository;
+import dev.guilhermeluan.domain.Task;
+import dev.guilhermeluan.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -15,72 +15,72 @@ import java.util.List;
 
 @Component
 public class DBRunner implements CommandLineRunner {
-    private final TarefaRepository repository;
+    private final TaskRepository repository;
 
     @Override
     public void run(String... args) {
         repository.saveAll(List.of(
-                Tarefa.builder()
-                        .nomeTarefa("Planejar projeto")
-                        .custo(130.50)
-                        .dataLimite(Date.valueOf("2024-11-10"))
-                        .ordemApresentacao(9)
+                Task.builder()
+                        .taskName("Planejar projeto")
+                        .cost(130.50)
+                        .dataLimit(Date.valueOf("2024-11-10"))
+                        .presentationOrder(9)
                         .build(),
 
-                Tarefa.builder()
-                        .nomeTarefa("Definir requisitos")
-                        .custo(75.00)
-                        .dataLimite(Date.valueOf("2024-11-12"))
-                        .ordemApresentacao(2)
+                Task.builder()
+                        .taskName("Definir requisitos")
+                        .cost(75.00)
+                        .dataLimit(Date.valueOf("2024-11-12"))
+                        .presentationOrder(2)
                         .build(),
 
-                Tarefa.builder()
-                        .nomeTarefa("Criar wireframe")
-                        .custo(50.00)
-                        .dataLimite(Date.valueOf("2024-11-15"))
-                        .ordemApresentacao(3)
+                Task.builder()
+                        .taskName("Criar wireframe")
+                        .cost(50.00)
+                        .dataLimit(Date.valueOf("2024-11-15"))
+                        .presentationOrder(3)
                         .build(),
 
-                Tarefa.builder()
-                        .nomeTarefa("Desenvolver backend")
-                        .custo(100.00)
-                        .dataLimite(Date.valueOf("2024-11-20"))
-                        .ordemApresentacao(4)
+                Task.builder()
+                        .taskName("Desenvolver backend")
+                        .cost(100.00)
+                        .dataLimit(Date.valueOf("2024-11-20"))
+                        .presentationOrder(4)
                         .build(),
 
-                Tarefa.builder()
-                        .nomeTarefa("Desenvolver frontend")
-                        .custo(90.00)
-                        .dataLimite(Date.valueOf("2024-11-25"))
-                        .ordemApresentacao(5)
+                Task.builder()
+                        .taskName("Desenvolver frontend")
+                        .cost(90.00)
+                        .dataLimit(Date.valueOf("2024-11-25"))
+                        .presentationOrder(5)
                         .build(),
 
-                Tarefa.builder()
-                        .nomeTarefa("Implementar segurança")
-                        .custo(60.00)
-                        .dataLimite(Date.valueOf("2024-11-28"))
-                        .ordemApresentacao(6)
+                Task.builder()
+                        .taskName("Implementar segurança")
+                        .cost(60.00)
+                        .dataLimit(Date.valueOf("2024-11-28"))
+                        .presentationOrder(6)
                         .build(),
 
-                Tarefa.builder()
-                        .nomeTarefa("Testes de integração")
-                        .custo(40.00)
-                        .dataLimite(Date.valueOf("2024-12-01"))
-                        .ordemApresentacao(7)
+                Task.builder()
+                        .taskName("Testes de integração")
+                        .cost(40.00)
+                        .dataLimit(Date.valueOf("2024-12-01"))
+                        .presentationOrder(7)
                         .build(),
 
-                Tarefa.builder()
-                        .nomeTarefa("Testes finais")
-                        .custo(30.00)
-                        .dataLimite(Date.valueOf("2024-12-05"))
-                        .ordemApresentacao(8)
+                Task.builder()
+                        .taskName("Testes finais")
+                        .cost(30.00)
+                        .dataLimit(Date.valueOf("2024-12-05"))
+                        .presentationOrder(8)
                         .build(),
 
-                Tarefa.builder()
-                        .nomeTarefa("Entrega do projeto")
-                        .custo(20.00)
-                        .dataLimite(Date.valueOf("2024-12-10"))
-                        .ordemApresentacao(1)
+                Task.builder()
+                        .taskName("Entrega do projeto")
+                        .cost(20.00)
+                        .dataLimit(Date.valueOf("2024-12-10"))
+                        .presentationOrder(1)
                         .build()
 
         ));

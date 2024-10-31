@@ -13,20 +13,20 @@ import java.util.Date;
 @Builder
 
 @Entity
-public class Tarefa {
+public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Long id;
     @Column(unique = true, nullable = false)
-    private String nomeTarefa;
+    private String taskName;
     @Column(nullable = false)
-    private Double custo;
+    private Double cost;
     @Column(nullable = false)
-    private Date dataLimite;
+    private Date dataLimit;
     @Column(unique = true, nullable = false)
-    private Integer ordemApresentacao;
+    private Integer presentationOrder;
 
 }
 
