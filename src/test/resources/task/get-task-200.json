@@ -1,0 +1,47 @@
+{
+  "content": [
+    {
+      "id": 1,
+      "taskName": "Tarefa 1",
+      "cost": 100.0,
+      "dataLimit": "2024-11-10T00:00:00.000+00:00"
+    },
+    {
+      "id": 2,
+      "taskName": "Tarefa 2",
+      "cost": 200.0,
+      "dataLimit": "2024-11-10T00:00:00.000+00:00"
+    },
+    {
+      "id": 3,
+      "taskName": "Tarefa 3",
+      "cost": 300.0,
+      "dataLimit": "2024-11-10T00:00:00.000+00:00"
+    }
+  ],
+  "pageable": {
+    "pageNumber": 0,
+    "pageSize": 3,
+    "sort": {
+      "empty": true,
+      "unsorted": true,
+      "sorted": false
+    },
+    "offset": 0,
+    "unpaged": false,
+    "paged": true
+  },
+  "last": true,
+  "totalElements": 3,
+  "totalPages": 1,
+  "size": 3,
+  "number": 0,
+  "sort": {
+    "empty": true,
+    "unsorted": true,
+    "sorted": false
+  },
+  "numberOfElements": 3,
+  "first": true,
+  "empty": false
+}

@@ -2,7 +2,7 @@ package dev.guilhermeluan.service;
 
 import dev.guilhermeluan.domain.Task;
 import dev.guilhermeluan.repository.TaskRepository;
-import dev.guilhermeluan.utils.TarefaUtils;
+import dev.guilhermeluan.utils.TaskUtils;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import org.assertj.core.api.Assertions;
@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,11 +36,11 @@ class TaskServiceTest {
     private EntityManager entityManager;
     private List<Task> tarefasList;
     @Spy
-    private TarefaUtils tarefasUtils;
+    private TaskUtils tarefasUtils;
 
     @BeforeEach
-    void init() {
-        tarefasList = tarefasUtils.newTarefaList();
+    void init() throws ParseException {
+        tarefasList = tarefasUtils.newTaskList();
     }
 
     @Test
@@ -78,14 +79,14 @@ class TaskServiceTest {
 
     @Test
     @DisplayName("save creates an tarefa")
-    void save_CreatesTarefa_WhenSuccessful() {
+    void save_CreatesTarefa_WhenSuccessful() throws ParseException {
 
         BDDMockito.when(entityManager.createQuery(anyString()))
                 .thenReturn(mock(Query.class));
         BDDMockito.when(entityManager.createQuery(anyString()).getSingleResult())
                 .thenReturn(0);
 
-        var tarefaToSave = tarefasUtils.newTarefaToSave();
+        var tarefaToSave = tarefasUtils.newTaskToSave();
 
         BDDMockito.when(repository.save(tarefaToSave)).thenReturn(tarefaToSave);
         BDDMockito.when(service.generateNextOrdemApresentacao()).thenReturn(1);
