@@ -6,8 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
 
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.Date;
 import java.util.Objects;
 
 @RestControllerAdvice
@@ -33,7 +35,7 @@ public class GlobalErrorHandlerAdvice {
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
     public ResponseEntity<DefaultErrorMessage> handleSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException e) {
 
-        if(e.getMessage().contains("Duplicate entry")){
+        if (e.getMessage().contains("Duplicate entry")) {
             var error = new DefaultErrorMessage(
                     HttpStatus.CONFLICT.value(),
                     "Task name already exists"
@@ -46,5 +48,17 @@ public class GlobalErrorHandlerAdvice {
                 "Internal Server Error"
         );
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.APPLICATION_JSON).body(error);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public final ResponseEntity<ExceptionResponse> handleAllExceptions(
+            Exception exception, WebRequest request) {
+
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                new Date(),
+                exception.getMessage(),
+                request.getDescription(false));
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
