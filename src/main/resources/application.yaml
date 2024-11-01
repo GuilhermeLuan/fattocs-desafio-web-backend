@@ -1,4 +1,6 @@
 spring:
+  jackson:
+    date-format: yyyy-MM-dd
   application:
     name: sistema-lista-tarefa
   datasource:
