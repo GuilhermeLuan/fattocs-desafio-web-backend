@@ -1,4 +1,6 @@
 spring:
+  jackson:
+    date-format: yyyy-MM-dd
   application:
     name: sistema-lista-tarefa
   datasource:
@@ -25,3 +27,6 @@ server:
   tomcat:
     threads:
       max: 20
+
+endpoint:
+  front: http://localhost:5500

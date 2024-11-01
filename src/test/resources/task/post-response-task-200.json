@@ -2,6 +2,6 @@
   "id": 1,
   "taskName": "Testes Unitarios",
   "cost": 150,
-  "dataLimit": "2024-11-10T00:00:00.000+00:00",
+  "dataLimit": "2024-11-10",
   "presentationOrder": 1
 }

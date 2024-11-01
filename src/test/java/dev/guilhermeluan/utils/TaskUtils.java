@@ -11,7 +11,7 @@ import java.util.List;
 
 @Component
 public class TaskUtils {
-    private static final String PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
+    private static final String PATTERN = "yyyy-MM-dd";
     private static final DateFormat DATE_FORMATTER = new SimpleDateFormat(PATTERN);
 
     public List<Task> newTaskList() throws ParseException {
@@ -19,7 +19,7 @@ public class TaskUtils {
                 .id(1L)
                 .taskName("Tarefa 1")
                 .cost(100.0)
-                .dataLimit(DATE_FORMATTER.parse("2024-11-10T00:00:00.000+00:00"))
+                .dataLimit(DATE_FORMATTER.parse("2024-11-10"))
                 .presentationOrder(1)
                 .build();
 
@@ -27,7 +27,7 @@ public class TaskUtils {
                 .id(2L)
                 .taskName("Tarefa 2")
                 .cost(200.0)
-                .dataLimit(DATE_FORMATTER.parse("2024-11-10T00:00:00.000+00:00"))
+                .dataLimit(DATE_FORMATTER.parse("2024-11-10"))
                 .presentationOrder(2)
                 .build();
 
@@ -35,7 +35,7 @@ public class TaskUtils {
                 .id(3L)
                 .taskName("Tarefa 3")
                 .cost(300.0)
-                .dataLimit(DATE_FORMATTER.parse("2024-11-10T00:00:00.000+00:00"))
+                .dataLimit(DATE_FORMATTER.parse("2024-11-10"))
                 .presentationOrder(3)
                 .build();
 
@@ -47,7 +47,7 @@ public class TaskUtils {
                 .id(1L)
                 .taskName("Testes Unitarios")
                 .cost(150.0)
-                .dataLimit(DATE_FORMATTER.parse("2024-11-10T00:00:00.000+00:00"))
+                .dataLimit(DATE_FORMATTER.parse("2024-11-10"))
                 .presentationOrder(1)
                 .build();
     }
