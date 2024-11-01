@@ -26,7 +26,7 @@ public class TaskService {
 
     public Task findByIdOrThrowNotFound(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Tarefa não foi encontrada!"));
+                .orElseThrow(() -> new NotFoundException("Task not found"));
     }
 
     @Transactional
@@ -42,11 +42,11 @@ public class TaskService {
     }
 
     public void delete(Long id) {
-        assertTarefaExists(id);
+        assertTaskExists(id);
         repository.deleteById(id);
     }
 
-    public void assertTarefaExists(Long id) {
+    public void assertTaskExists(Long id) {
         findByIdOrThrowNotFound(id);
     }
 
