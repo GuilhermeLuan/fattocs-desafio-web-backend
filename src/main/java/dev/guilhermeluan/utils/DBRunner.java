@@ -21,26 +21,11 @@ public class DBRunner implements CommandLineRunner {
     public void run(String... args) {
         repository.saveAll(List.of(
                 Task.builder()
-                        .taskName("Tarefa 1")
-                        .cost(100.0)
-                        .dataLimit(Date.valueOf("2024-11-10"))
-                        .presentationOrder(3)
-                        .build(),
-
-                Task.builder()
-                        .taskName("Tarefa 2")
-                        .cost(200.0)
-                        .dataLimit(Date.valueOf("2024-11-10"))
-                        .presentationOrder(2)
-                        .build(),
-
-                Task.builder()
-                        .taskName("Tarefa 3")
-                        .cost(300.0)
-                        .dataLimit(Date.valueOf("2024-11-10"))
+                        .taskName("Finalizar Back-end")
+                        .cost(1500.50)
+                        .dataLimit(Date.valueOf("2024-11-21"))
                         .presentationOrder(1)
                         .build()
-
         ));
 
         log.info("Tarefas cadastradas!");
