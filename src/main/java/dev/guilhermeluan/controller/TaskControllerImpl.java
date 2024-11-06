@@ -15,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 
 @RestController
@@ -23,11 +25,21 @@ public class TaskControllerImpl implements TaskController {
     private final TaskService service;
     private final TaskMapper mapper;
 
-    @GetMapping
+    @GetMapping("/findAll")
     @Override
     public ResponseEntity<Page<TaskGetResponse>> findAll(Pageable pageable) {
 
         Page<TaskGetResponse> responses = service.findAll(pageable).map(mapper::toTaskGetResponse);
+        return ResponseEntity.status(HttpStatus.OK).body(responses);
+    }
+
+    @GetMapping()
+    @Override
+    public ResponseEntity<List<TaskGetResponse>> findAll() {
+        List<Task> taskList = service.findAll();
+
+        List<TaskGetResponse> responses = mapper.toTaskGetResponse(taskList);
+
         return ResponseEntity.status(HttpStatus.OK).body(responses);
     }
 

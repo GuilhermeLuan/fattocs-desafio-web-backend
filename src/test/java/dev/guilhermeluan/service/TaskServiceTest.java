@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.text.ParseException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,72 +35,78 @@ class TaskServiceTest {
     private TaskRepository repository;
     @Mock
     private EntityManager entityManager;
-    private List<Task> tarefasList;
+    private List<Task> tasksList;
     @Spy
-    private TaskUtils tarefasUtils;
+    private TaskUtils tasksUtils;
 
     @BeforeEach
     void init() throws ParseException {
-        tarefasList = tarefasUtils.newTaskList();
+        tasksList = tasksUtils.newTaskList();
     }
 
     @Test
-    @DisplayName("findAll returns a paginated list of tarefas")
-    void findAll_ReturnsPaginatedTarefa_WhenSuccessful() {
-        var pageRequest = PageRequest.of(0, tarefasList.size());
-        var pageTarefa = new PageImpl<Task>(tarefasList, pageRequest, 1);
+    @DisplayName("findAll returns a list of tasks")
+    void findAll_ReturnsListOfTask_WhenSuccessful() {
+        BDDMockito.when(repository.findAll()).thenReturn(tasksList);
 
-        BDDMockito.when(repository.findAll(BDDMockito.any(Pageable.class))).thenReturn(pageTarefa);
+        var tasksFound = service.findAll();
+        Assertions.assertThat(tasksFound).isNotNull().hasSameElementsAs(tasksList);
+    }
 
-        var tarefasFound = service.findAll(pageRequest);
-        Assertions.assertThat(tarefasFound).isNotNull().hasSameElementsAs(tarefasList);
+    @Test
+    @DisplayName("GET v1/tasks returns an empty list when no task is found")
+    void findAll_ReturnsEmptyList_WhenNoTaskIsFound() {
+        BDDMockito.when(repository.findAll()).thenReturn(Collections.emptyList());
+
+        var tasksFound = service.findAll();
+        Assertions.assertThat(tasksFound).isNotNull().isEmpty();
     }
 
     @Test
     @DisplayName("findById returns an tarefa with given id")
-    void findById_ReturnsTarefaById_WhenSuccessful() {
-        var expectedTarefa = tarefasList.getFirst();
-        BDDMockito.when(repository.findById(expectedTarefa.getId())).thenReturn(Optional.of(expectedTarefa));
+    void findById_ReturnsTaskById_WhenSuccessful() {
+        var expectedTask = tasksList.getFirst();
+        BDDMockito.when(repository.findById(expectedTask.getId())).thenReturn(Optional.of(expectedTask));
 
-        var tarefas = service.findByIdOrThrowNotFound(expectedTarefa.getId());
+        var tasks = service.findByIdOrThrowNotFound(expectedTask.getId());
 
-        Assertions.assertThat(tarefas).isEqualTo(expectedTarefa);
+        Assertions.assertThat(tasks).isEqualTo(expectedTask);
     }
 
     @Test
     @DisplayName("findById throws ResponseStatusException when tarefa is not found")
-    void findById_ThrowsResponseStatusException_WhenTarefaIsNotFound() {
-        var expectedTarefa = tarefasList.getFirst();
-        BDDMockito.when(repository.findById(expectedTarefa.getId())).thenReturn(Optional.empty());
+    void findById_ThrowsResponseStatusException_WhenTaskIsNotFound() {
+        var expectedTask = tasksList.getFirst();
+        BDDMockito.when(repository.findById(expectedTask.getId())).thenReturn(Optional.empty());
 
         Assertions.assertThatException()
-                .isThrownBy(() -> service.findByIdOrThrowNotFound(expectedTarefa.getId()))
+                .isThrownBy(() -> service.findByIdOrThrowNotFound(expectedTask.getId()))
                 .isInstanceOf(ResponseStatusException.class);
     }
 
     @Test
     @DisplayName("save creates an tarefa")
-    void save_CreatesTarefa_WhenSuccessful() throws ParseException {
+    void save_CreatesTask_WhenSuccessful() throws ParseException {
 
         BDDMockito.when(entityManager.createQuery(anyString()))
                 .thenReturn(mock(Query.class));
         BDDMockito.when(entityManager.createQuery(anyString()).getSingleResult())
                 .thenReturn(0);
 
-        var tarefaToSave = tarefasUtils.newTaskToSave();
+        var tarefaToSave = tasksUtils.newTaskToSave();
 
         BDDMockito.when(repository.save(tarefaToSave)).thenReturn(tarefaToSave);
         BDDMockito.when(service.generateNextOrdemApresentacao()).thenReturn(1);
 
-        var savedTarefa = service.save(tarefaToSave);
+        var savedTask = service.save(tarefaToSave);
 
-        Assertions.assertThat(savedTarefa).isEqualTo(tarefaToSave).hasNoNullFieldsOrProperties();
+        Assertions.assertThat(savedTask).isEqualTo(tarefaToSave).hasNoNullFieldsOrProperties();
     }
 
     @Test
     @DisplayName("delete removes an tarefa")
-    void delete_RemoveTarefa_WhenSuccessful() {
-        var tarefaToDelete = tarefasList.getFirst();
+    void delete_RemoveTask_WhenSuccessful() {
+        var tarefaToDelete = tasksList.getFirst();
         BDDMockito.when(repository.findById(tarefaToDelete.getId())).thenReturn(Optional.of(tarefaToDelete));
 
         Assertions.assertThatNoException().isThrownBy(() -> service.delete(tarefaToDelete.getId()));
@@ -107,8 +114,8 @@ class TaskServiceTest {
 
     @Test
     @DisplayName("delete throws ResponseStatusException when tarefa is not found")
-    void delete_ThrowsResponseStatusException_WhenTarefaIsNotFound() {
-        var tarefaToDelete = tarefasList.getFirst();
+    void delete_ThrowsResponseStatusException_WhenTaskIsNotFound() {
+        var tarefaToDelete = tasksList.getFirst();
         BDDMockito.when(repository.findById(tarefaToDelete.getId())).thenReturn(Optional.empty());
 
         Assertions.assertThatException()
@@ -118,9 +125,9 @@ class TaskServiceTest {
 
     @Test
     @DisplayName("update updates an tarefa")
-    void update_UpdatesTarefa_WhenSuccessful() {
-        var tarefaToUpdate = tarefasList.getFirst();
-        tarefaToUpdate.setTaskName("Novo Nome Tarefa");
+    void update_UpdatesTask_WhenSuccessful() {
+        var tarefaToUpdate = tasksList.getFirst();
+        tarefaToUpdate.setTaskName("Novo Nome Task");
 
         BDDMockito.when(repository.findById(tarefaToUpdate.getId())).thenReturn(Optional.of(tarefaToUpdate));
         BDDMockito.when(repository.save(tarefaToUpdate)).thenReturn(tarefaToUpdate);
@@ -131,7 +138,7 @@ class TaskServiceTest {
     @Test
     @DisplayName("update throws ResponseStatusException when tarefa is not found")
     void update_ThrowsResponseStatusException_WhenProducerIsNotFound() {
-        var tarefaToUpdate = tarefasList.getFirst();
+        var tarefaToUpdate = tasksList.getFirst();
 
         BDDMockito.when(repository.findById(ArgumentMatchers.anyLong())).thenReturn(Optional.empty());
 

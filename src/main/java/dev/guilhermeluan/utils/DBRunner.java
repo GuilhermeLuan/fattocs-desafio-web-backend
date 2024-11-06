@@ -24,7 +24,7 @@ public class DBRunner implements CommandLineRunner {
                         .taskName("Tarefa 1")
                         .cost(100.0)
                         .dataLimit(Date.valueOf("2024-11-10"))
-                        .presentationOrder(1)
+                        .presentationOrder(3)
                         .build(),
 
                 Task.builder()
@@ -38,7 +38,7 @@ public class DBRunner implements CommandLineRunner {
                         .taskName("Tarefa 3")
                         .cost(300.0)
                         .dataLimit(Date.valueOf("2024-11-10"))
-                        .presentationOrder(3)
+                        .presentationOrder(1)
                         .build()
 
         ));

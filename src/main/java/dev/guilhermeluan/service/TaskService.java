@@ -11,6 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 
 @Service
@@ -22,6 +24,10 @@ public class TaskService {
 
     public Page<Task> findAll(Pageable pageable) {
         return repository.findAll(pageable);
+    }
+
+    public List<Task> findAll() {
+        return repository.findAll();
     }
 
     public Task findByIdOrThrowNotFound(Long id) {
