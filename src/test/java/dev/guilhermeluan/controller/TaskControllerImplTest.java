@@ -28,6 +28,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -60,13 +61,24 @@ class TaskControllerImplTest {
     }
 
     @Test
-    @DisplayName("GET v1/tasks returns a paginated list of tasks")
-    void findAll_ReturnsPaginatedTasks_WhenSuccessful() throws Exception {
+    @DisplayName("GET v1/tasks returns list of tasks")
+    void findAll_ReturnsListOfTasks_WhenSuccessful() throws Exception {
         var response = fileUtils.readResourceFile("task/get-task-200.json");
-        var pageRequest = PageRequest.of(0, tasksList.size());
-        var pageTask = new PageImpl<>(tasksList, pageRequest, tasksList.size());
 
-        BDDMockito.when(service.findAll(BDDMockito.any(Pageable.class))).thenReturn(pageTask);
+        BDDMockito.when(service.findAll()).thenReturn(tasksList);
+
+        mockMvc.perform(get(URL))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(response));
+    }
+
+    @Test
+    @DisplayName("GET v1/tasks returns an empty list when no task is found")
+    void findAll_ReturnsEmptyList_WhenNoTaskIsFound() throws Exception {
+        var response = fileUtils.readResourceFile("task/get-task-empty-list-200.json");
+
+        BDDMockito.when(service.findAll()).thenReturn(Collections.emptyList());
 
         mockMvc.perform(get(URL))
                 .andDo(print())
