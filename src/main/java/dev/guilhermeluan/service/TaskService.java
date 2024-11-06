@@ -22,12 +22,8 @@ public class TaskService {
     @PersistenceContext
     private final EntityManager entityManager;
 
-    public Page<Task> findAll(Pageable pageable) {
-        return repository.findAll(pageable);
-    }
-
     public List<Task> findAll() {
-        return repository.findAll();
+        return repository.findAllByOrderByPresentationOrder();
     }
 
     public Task findByIdOrThrowNotFound(Long id) {

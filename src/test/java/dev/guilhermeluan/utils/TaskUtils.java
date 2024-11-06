@@ -20,7 +20,7 @@ public class TaskUtils {
                 .taskName("Tarefa 1")
                 .cost(100.0)
                 .dataLimit(DATE_FORMATTER.parse("2024-11-10"))
-                .presentationOrder(1)
+                .presentationOrder(3)
                 .build();
 
         var tarefa2 = Task.builder()
@@ -36,7 +36,7 @@ public class TaskUtils {
                 .taskName("Tarefa 3")
                 .cost(300.0)
                 .dataLimit(DATE_FORMATTER.parse("2024-11-10"))
-                .presentationOrder(3)
+                .presentationOrder(1)
                 .build();
 
         return new ArrayList<>(List.of(tarefa1, tarefa2, tarefa3));

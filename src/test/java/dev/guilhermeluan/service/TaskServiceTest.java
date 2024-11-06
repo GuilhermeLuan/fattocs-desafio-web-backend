@@ -19,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.text.ParseException;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,17 +48,16 @@ class TaskServiceTest {
     @Test
     @DisplayName("findAll returns a list of tasks")
     void findAll_ReturnsListOfTask_WhenSuccessful() {
-        BDDMockito.when(repository.findAll()).thenReturn(tasksList);
+        tasksList.sort(Comparator.comparingInt(Task::getPresentationOrder));
+        BDDMockito.when(repository.findAllByOrderByPresentationOrder()).thenReturn(tasksList);
 
         var tasksFound = service.findAll();
-        Assertions.assertThat(tasksFound).isNotNull().hasSameElementsAs(tasksList);
+        Assertions.assertThat(tasksFound).isNotNull().containsExactlyElementsOf(tasksList);
     }
 
     @Test
     @DisplayName("GET v1/tasks returns an empty list when no task is found")
     void findAll_ReturnsEmptyList_WhenNoTaskIsFound() {
-        BDDMockito.when(repository.findAll()).thenReturn(Collections.emptyList());
-
         var tasksFound = service.findAll();
         Assertions.assertThat(tasksFound).isNotNull().isEmpty();
     }

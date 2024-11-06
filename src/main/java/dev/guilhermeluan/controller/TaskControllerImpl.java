@@ -25,14 +25,6 @@ public class TaskControllerImpl implements TaskController {
     private final TaskService service;
     private final TaskMapper mapper;
 
-    @GetMapping("/findAll")
-    @Override
-    public ResponseEntity<Page<TaskGetResponse>> findAll(Pageable pageable) {
-
-        Page<TaskGetResponse> responses = service.findAll(pageable).map(mapper::toTaskGetResponse);
-        return ResponseEntity.status(HttpStatus.OK).body(responses);
-    }
-
     @GetMapping()
     @Override
     public ResponseEntity<List<TaskGetResponse>> findAll() {
