@@ -4,7 +4,7 @@ spring:
   application:
     name: sistema-lista-tarefa
   datasource:
-      url: jdbc:mysql://${PROD_DB_HOST}:${PROD_DB_PORT}/${PROD_DB_NAME}?userTimezone=true&serverTimezone=UTC&createDatabaseIfNotExist=true
+      url: jdbc:mysql://${PROD_DB_HOST}:${PROD_DB_PORT}/${PROD_DB_NAME}?useTimezone=true&serverTimezone=UTC&createDatabaseIfNotExist=true
       username: ${PROD_DB_USERNAME}
       password: ${PROD_DB_PASSWORD}
 
