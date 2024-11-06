@@ -1,0 +1,32 @@
+spring:
+  jackson:
+    date-format: yyyy-MM-dd
+  application:
+    name: sistema-lista-tarefa
+  datasource:
+      url: jdbc:mysql://${PROD_DB_HOST}:${PROD_DB_PORT}/${PROD_DB_NAME}?userTimezone=true&serverTimezone=UTC&createDatabaseIfNotExist=true
+      username: ${PROD_DB_USERNAME}
+      password: ${PROD_DB_PASSWORD}
+
+  jpa:
+      hibernate:
+        ddl-auto: update
+  threads:
+      virtual:
+        enabled: true
+
+logging:
+  level:
+    dev.guilhermeluan: debug
+server:
+  port: 8080
+  servlet:
+    context-path: /
+  error:
+    include-stacktrace: on_param
+  tomcat:
+    threads:
+      max: 20
+
+endpoint:
+  front: ${FRONT_END_ENDPOINT}
