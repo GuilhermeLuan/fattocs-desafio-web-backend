@@ -1,7 +1,7 @@
-spring_profiles_active=
-PROD_DB_HOST=
-PROD_DB_PORT=
-PROD_DB_NAME=
-PROD_DB_USERNAME=
-PROD_DB_PASSWORD=
-FRONT_END_ENDPOINT=
+spring_profiles_active=prod
+PROD_DB_HOST=mysql.railway.internal
+PROD_DB_PORT=3306
+PROD_DB_NAME=railway
+PROD_DB_USERNAME=root
+PROD_DB_PASSWORD=wyolLvYKpUdWHxNXgqwVRMGleGYcwUPj
+FRONT_END_ENDPOINT=http://localhost:5500
