@@ -69,7 +69,7 @@ A documentação estará acessível em http://localhost:8080/swagger-ui/index.ht
 ### Criar um Novo Livro
 
       Método: POST
-      URL: http://localhost:8000/v1/tasks
+      URL: http://localhost:8080/v1/tasks
 
 ### Corpo da Solicitação:
 
