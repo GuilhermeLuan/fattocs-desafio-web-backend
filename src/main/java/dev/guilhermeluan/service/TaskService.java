@@ -2,6 +2,7 @@ package dev.guilhermeluan.service;
 
 import dev.guilhermeluan.domain.Task;
 import dev.guilhermeluan.exception.NotFoundException;
+import dev.guilhermeluan.exception.TaskNameAlreadyExists;
 import dev.guilhermeluan.repository.TaskRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 
@@ -26,11 +28,12 @@ public class TaskService {
 
     public Task findByIdOrThrowNotFound(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Task not found"));
+                .orElseThrow(() -> new NotFoundException("Task name already exists"));
     }
 
     @Transactional
     public Task save(Task task) {
+        assertTaskNameExists(task.getTaskName());
         task.setPresentationOrder(generateNextOrdemApresentacao());
         return repository.save(task);
     }
@@ -46,8 +49,19 @@ public class TaskService {
         repository.deleteById(id);
     }
 
+    public Optional<Task> findByNameOrThrowTaskNameAlreadyExits(String taskName) {
+        if(repository.findByTaskName(taskName).isPresent()) {
+            throw new TaskNameAlreadyExists("Task name already exists");
+        }
+        return repository.findByTaskName(taskName);
+    }
+
     public void assertTaskExists(Long id) {
         findByIdOrThrowNotFound(id);
+    }
+
+    public void assertTaskNameExists(String taskName) {
+        findByNameOrThrowTaskNameAlreadyExits(taskName);
     }
 
     @Transactional
