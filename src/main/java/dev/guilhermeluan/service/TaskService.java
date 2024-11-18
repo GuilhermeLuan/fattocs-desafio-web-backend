@@ -2,6 +2,7 @@ package dev.guilhermeluan.service;
 
 import dev.guilhermeluan.domain.Task;
 import dev.guilhermeluan.exception.NotFoundException;
+import dev.guilhermeluan.exception.TaskCostNegative;
 import dev.guilhermeluan.exception.TaskNameAlreadyExists;
 import dev.guilhermeluan.repository.TaskRepository;
 import jakarta.persistence.EntityManager;
@@ -34,12 +35,15 @@ public class TaskService {
     @Transactional
     public Task save(Task task) {
         assertTaskNameExists(task.getTaskName());
+        assertTaskCostPositive(task.getCost());
         task.setPresentationOrder(generateNextOrdemApresentacao());
         return repository.save(task);
     }
 
     public void update(Task taskToUpdate) {
         Task taskFound = findByIdOrThrowNotFound(taskToUpdate.getId());
+        assertTaskNameExists(taskToUpdate.getTaskName());
+        assertTaskCostPositive(taskToUpdate.getCost());
         taskToUpdate.setPresentationOrder(taskFound.getPresentationOrder());
         repository.save(taskToUpdate);
     }
@@ -62,6 +66,12 @@ public class TaskService {
 
     public void assertTaskNameExists(String taskName) {
         findByNameOrThrowTaskNameAlreadyExits(taskName);
+    }
+
+    public void assertTaskCostPositive(Double cost) {
+        if(cost < 0){
+            throw new TaskCostNegative("Task cost negative");
+        }
     }
 
     @Transactional

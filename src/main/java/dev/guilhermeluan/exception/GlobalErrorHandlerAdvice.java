@@ -29,6 +29,15 @@ public class GlobalErrorHandlerAdvice {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(MediaType.APPLICATION_JSON).body(error);
     }
 
+    @ExceptionHandler(TaskCostNegative.class)
+    public ResponseEntity<DefaultErrorMessage> handleTaskCostNegative(TaskCostNegative e) {
+        var error = new DefaultErrorMessage(
+                HttpStatus.BAD_REQUEST.value(),
+                e.getReason()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(MediaType.APPLICATION_JSON).body(error);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<DefaultErrorMessage> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         var error = new DefaultErrorMessage(
