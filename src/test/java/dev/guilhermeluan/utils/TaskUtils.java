@@ -46,7 +46,7 @@ public class TaskUtils {
         return Task.builder()
                 .id(1L)
                 .taskName("Testes Unitarios")
-                .cost(150.0)
+                .cost(150.00)
                 .dataLimit(DATE_FORMATTER.parse("2024-11-10"))
                 .presentationOrder(1)
                 .build();

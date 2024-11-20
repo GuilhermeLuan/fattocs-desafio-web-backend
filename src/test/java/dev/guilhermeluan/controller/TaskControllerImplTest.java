@@ -20,9 +20,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -172,6 +169,47 @@ class TaskControllerImplTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(response));
     }
+    @Test
+    @DisplayName("POST v1/task returns bad request when cost are greater than 999999999999999")
+    void save_ReturnsBadRequest_WhenCostAreGreaterThan999999999999999() throws Exception {
+        var request = fileUtils.readResourceFile("task/post-request-task-cost-greater-99999999-400.json");
+        var error = "The cost cannot be greater than 999999999999999.";
+
+        var mvcResult = mockMvc.perform(post(URL)
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andReturn();
+
+        var resolvedException = mvcResult.getResolvedException();
+
+        Assertions.assertThat(resolvedException).isNotNull();
+
+        Assertions.assertThat(resolvedException.getMessage()).contains(error);
+    }
+
+    @Test
+    @DisplayName("PUT v1/task returns bad request when cost are greater than 999999999999999")
+    void update_ReturnsBadRequest_WhenCostAreGreaterThan999999999999999() throws Exception {
+        var request = fileUtils.readResourceFile("task/put-request-task-cost-greater-99999999-400.json");
+        var error = "The cost cannot be greater than 999999999999999.";
+
+        var mvcResult = mockMvc.perform(put(URL)
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andReturn();
+
+        var resolvedException = mvcResult.getResolvedException();
+
+        Assertions.assertThat(resolvedException).isNotNull();
+
+        Assertions.assertThat(resolvedException.getMessage()).contains(error);
+    }
 
     @ParameterizedTest
     @MethodSource("postTaskBadRequestSource")
@@ -217,7 +255,7 @@ class TaskControllerImplTest {
 
 
     private static Stream<Arguments> putTaskBadRequestSource() {
-        var allRequiredErrors = allRequiredErrors();
+        var allRequiredErrors = allBadRequestErrors();
         allRequiredErrors.add("The field 'id' is required");
 
         return Stream.of(
@@ -227,7 +265,7 @@ class TaskControllerImplTest {
     }
 
     private static Stream<Arguments> postTaskBadRequestSource() {
-        var allRequiredErrors = allRequiredErrors();
+        var allRequiredErrors = allBadRequestErrors();
 
         return Stream.of(
                 Arguments.of("post-request-task-empty-fields-400.json", allRequiredErrors),
@@ -236,7 +274,7 @@ class TaskControllerImplTest {
     }
 
 
-    private static List<String> allRequiredErrors() {
+    private static List<String> allBadRequestErrors() {
         var firstNameRequiredError = "The field 'taskName' is required";
         var lastNameRequiredError = "The field 'cost' is required";
         var emailRequiredError = "The field 'dataLimit' is required";

@@ -1,6 +1,8 @@
 package dev.guilhermeluan.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 
 import java.util.Date;
@@ -22,6 +24,7 @@ public class Task {
     @Column(unique = true, nullable = false)
     private String taskName;
     @Column(nullable = false)
+    @PositiveOrZero
     private Double cost;
     @Column(nullable = false)
     private Date dataLimit;
