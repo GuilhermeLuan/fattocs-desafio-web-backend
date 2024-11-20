@@ -191,10 +191,52 @@ class TaskControllerImplTest {
     }
 
     @Test
+    @DisplayName("POST v1/task returns bad request when cost are smaller than 0")
+    void save_ReturnsBadRequest_WhenCostAreSmallerThan0() throws Exception {
+        var request = fileUtils.readResourceFile("task/post-request-task-cost-0-400.json");
+        var error = "The cost must be greater than 0.";
+
+        var mvcResult = mockMvc.perform(post(URL)
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andReturn();
+
+        var resolvedException = mvcResult.getResolvedException();
+
+        Assertions.assertThat(resolvedException).isNotNull();
+
+        Assertions.assertThat(resolvedException.getMessage()).contains(error);
+    }
+
+    @Test
     @DisplayName("PUT v1/task returns bad request when cost are greater than 999999999999999")
     void update_ReturnsBadRequest_WhenCostAreGreaterThan999999999999999() throws Exception {
         var request = fileUtils.readResourceFile("task/put-request-task-cost-greater-99999999-400.json");
         var error = "The cost cannot be greater than 999999999999999.";
+
+        var mvcResult = mockMvc.perform(put(URL)
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andReturn();
+
+        var resolvedException = mvcResult.getResolvedException();
+
+        Assertions.assertThat(resolvedException).isNotNull();
+
+        Assertions.assertThat(resolvedException.getMessage()).contains(error);
+    }
+
+    @Test
+    @DisplayName("PUT v1/task returns bad request when cost are greater than 999999999999999")
+    void update_ReturnsBadRequest_WhenCostSmallerThan0() throws Exception {
+        var request = fileUtils.readResourceFile("task/put-request-task-cost-0-400.json");
+        var error = "The cost must be greater than 0.";
 
         var mvcResult = mockMvc.perform(put(URL)
                         .content(request)
@@ -264,6 +306,16 @@ class TaskControllerImplTest {
                 );
     }
 
+
+    private static Stream<Arguments> putTaskCostBadRequestSource() {
+        var allRequiredErrors = allCostBadRequestErrors();
+
+        return Stream.of(
+                Arguments.of("put-request-task-cost-greater-99999999-400.json", allRequiredErrors),
+                Arguments.of("put-request-task-cost-0-400.json", allRequiredErrors)
+        );
+    }
+
     private static Stream<Arguments> postTaskBadRequestSource() {
         var allRequiredErrors = allBadRequestErrors();
 
@@ -273,6 +325,14 @@ class TaskControllerImplTest {
                 );
     }
 
+    private static Stream<Arguments> postTaskCostBadRequestSource() {
+        var allRequiredErrors = allCostBadRequestErrors();
+
+        return Stream.of(
+                Arguments.of("post-request-task-cost-greater-99999999-400.json", allRequiredErrors),
+                Arguments.of("post-request-task-cost-0-400.json", allRequiredErrors)
+        );
+    }
 
     private static List<String> allBadRequestErrors() {
         var firstNameRequiredError = "The field 'taskName' is required";
@@ -280,5 +340,12 @@ class TaskControllerImplTest {
         var emailRequiredError = "The field 'dataLimit' is required";
 
         return new ArrayList<>(List.of(firstNameRequiredError, lastNameRequiredError, emailRequiredError));
+    }
+
+    private static List<String> allCostBadRequestErrors() {
+        var costCannotBeGreater = "The cost cannot be greater than 999999999999999.";
+        var costMustBeGreater = "The cost must be greater than 0.";
+
+        return new ArrayList<>(List.of(costCannotBeGreater, costMustBeGreater));
     }
 }
