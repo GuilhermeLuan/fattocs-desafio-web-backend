@@ -22,6 +22,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -169,89 +170,6 @@ class TaskControllerImplTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(response));
     }
-    @Test
-    @DisplayName("POST v1/task returns bad request when cost are greater than 999999999999999")
-    void save_ReturnsBadRequest_WhenCostAreGreaterThan999999999999999() throws Exception {
-        var request = fileUtils.readResourceFile("task/post-request-task-cost-greater-99999999-400.json");
-        var error = "The cost cannot be greater than 999999999999999.";
-
-        var mvcResult = mockMvc.perform(post(URL)
-                        .content(request)
-                        .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andReturn();
-
-        var resolvedException = mvcResult.getResolvedException();
-
-        Assertions.assertThat(resolvedException).isNotNull();
-
-        Assertions.assertThat(resolvedException.getMessage()).contains(error);
-    }
-
-    @Test
-    @DisplayName("POST v1/task returns bad request when cost are smaller than 0")
-    void save_ReturnsBadRequest_WhenCostAreSmallerThan0() throws Exception {
-        var request = fileUtils.readResourceFile("task/post-request-task-cost-0-400.json");
-        var error = "The cost must be greater than 0.";
-
-        var mvcResult = mockMvc.perform(post(URL)
-                        .content(request)
-                        .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andReturn();
-
-        var resolvedException = mvcResult.getResolvedException();
-
-        Assertions.assertThat(resolvedException).isNotNull();
-
-        Assertions.assertThat(resolvedException.getMessage()).contains(error);
-    }
-
-    @Test
-    @DisplayName("PUT v1/task returns bad request when cost are greater than 999999999999999")
-    void update_ReturnsBadRequest_WhenCostAreGreaterThan999999999999999() throws Exception {
-        var request = fileUtils.readResourceFile("task/put-request-task-cost-greater-99999999-400.json");
-        var error = "The cost cannot be greater than 999999999999999.";
-
-        var mvcResult = mockMvc.perform(put(URL)
-                        .content(request)
-                        .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andReturn();
-
-        var resolvedException = mvcResult.getResolvedException();
-
-        Assertions.assertThat(resolvedException).isNotNull();
-
-        Assertions.assertThat(resolvedException.getMessage()).contains(error);
-    }
-
-    @Test
-    @DisplayName("PUT v1/task returns bad request when cost are greater than 999999999999999")
-    void update_ReturnsBadRequest_WhenCostSmallerThan0() throws Exception {
-        var request = fileUtils.readResourceFile("task/put-request-task-cost-0-400.json");
-        var error = "The cost must be greater than 0.";
-
-        var mvcResult = mockMvc.perform(put(URL)
-                        .content(request)
-                        .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andReturn();
-
-        var resolvedException = mvcResult.getResolvedException();
-
-        Assertions.assertThat(resolvedException).isNotNull();
-
-        Assertions.assertThat(resolvedException.getMessage()).contains(error);
-    }
 
     @ParameterizedTest
     @MethodSource("postTaskBadRequestSource")
@@ -295,6 +213,59 @@ class TaskControllerImplTest {
         Assertions.assertThat(resolvedException.getMessage()).contains(errors);
     }
 
+    @ParameterizedTest
+    @MethodSource("postTaskCostBadRequestSource")
+    @DisplayName("POST v1/task returns bad request when cost is invalid")
+    void save_ReturnsBadRequest_WhenCostIsInvalid(String fileName, List<String> errors) throws Exception {
+        var request = fileUtils.readResourceFile("task/%s".formatted(fileName));
+
+        var mvcResult = mockMvc.perform(post(URL)
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn();
+
+        var resolvedException = mvcResult.getResolvedException();
+        Assertions.assertThat(resolvedException).isNotNull();
+        Assertions.assertThat(resolvedException.getMessage()).contains(errors);
+    }
+
+    @ParameterizedTest
+    @MethodSource("putTaskCostBadRequestSource")
+    @DisplayName("PUT v1/task returns bad request when cost is invalid")
+    void update_ReturnsBadRequest_WhenCostIsInvalid(String fileName, List<String> errors) throws Exception {
+        var request = fileUtils.readResourceFile("task/%s".formatted(fileName));
+
+        var mvcResult = mockMvc.perform(put(URL)
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn();
+
+        var resolvedException = mvcResult.getResolvedException();
+        Assertions.assertThat(resolvedException).isNotNull();
+        Assertions.assertThat(resolvedException.getMessage()).contains(errors);
+    }
+
+    private static Stream<Arguments> postTaskCostBadRequestSource() {
+
+        return Stream.of(
+                Arguments.of("post-request-task-cost-greater-99999999-400.json", List.of("The cost cannot be greater than 999999999999999.")),
+                Arguments.of("post-request-task-cost-0-400.json", List.of("The cost must be greater than 0."))
+        );
+    }
+
+    private static Stream<Arguments> putTaskCostBadRequestSource() {
+
+        return Stream.of(
+                Arguments.of("put-request-task-cost-greater-99999999-400.json", List.of("The cost cannot be greater than 999999999999999.")),
+                Arguments.of("put-request-task-cost-0-400.json", List.of("The cost must be greater than 0."))
+        );
+    }
 
     private static Stream<Arguments> putTaskBadRequestSource() {
         var allRequiredErrors = allBadRequestErrors();
@@ -307,15 +278,6 @@ class TaskControllerImplTest {
     }
 
 
-    private static Stream<Arguments> putTaskCostBadRequestSource() {
-        var allRequiredErrors = allCostBadRequestErrors();
-
-        return Stream.of(
-                Arguments.of("put-request-task-cost-greater-99999999-400.json", allRequiredErrors),
-                Arguments.of("put-request-task-cost-0-400.json", allRequiredErrors)
-        );
-    }
-
     private static Stream<Arguments> postTaskBadRequestSource() {
         var allRequiredErrors = allBadRequestErrors();
 
@@ -325,27 +287,11 @@ class TaskControllerImplTest {
                 );
     }
 
-    private static Stream<Arguments> postTaskCostBadRequestSource() {
-        var allRequiredErrors = allCostBadRequestErrors();
-
-        return Stream.of(
-                Arguments.of("post-request-task-cost-greater-99999999-400.json", allRequiredErrors),
-                Arguments.of("post-request-task-cost-0-400.json", allRequiredErrors)
-        );
-    }
-
     private static List<String> allBadRequestErrors() {
         var firstNameRequiredError = "The field 'taskName' is required";
         var lastNameRequiredError = "The field 'cost' is required";
         var emailRequiredError = "The field 'dataLimit' is required";
 
         return new ArrayList<>(List.of(firstNameRequiredError, lastNameRequiredError, emailRequiredError));
-    }
-
-    private static List<String> allCostBadRequestErrors() {
-        var costCannotBeGreater = "The cost cannot be greater than 999999999999999.";
-        var costMustBeGreater = "The cost must be greater than 0.";
-
-        return new ArrayList<>(List.of(costCannotBeGreater, costMustBeGreater));
     }
 }
