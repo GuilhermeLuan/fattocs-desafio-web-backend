@@ -34,7 +34,7 @@ public class TaskService {
 
     @Transactional
     public Task save(Task task) {
-        assertTaskNameExists(task.getTaskName());
+        assertTaskNameExists(task);
         assertTaskCostPositive(task.getCost());
         task.setPresentationOrder(generateNextOrdemApresentacao());
         return repository.save(task);
@@ -42,7 +42,7 @@ public class TaskService {
 
     public void update(Task taskToUpdate) {
         Task taskFound = findByIdOrThrowNotFound(taskToUpdate.getId());
-        assertTaskNameExists(taskToUpdate.getTaskName());
+        assertTaskNameExists(taskToUpdate);
         assertTaskCostPositive(taskToUpdate.getCost());
         taskToUpdate.setPresentationOrder(taskFound.getPresentationOrder());
         repository.save(taskToUpdate);
@@ -53,19 +53,22 @@ public class TaskService {
         repository.deleteById(id);
     }
 
-    public Optional<Task> findByNameOrThrowTaskNameAlreadyExits(String taskName) {
-        if(repository.findByTaskName(taskName).isPresent()) {
+    public void assertTaskNameExists(Task task) {
+        Optional<Task> existingTask;
+
+        if (task.getId() == null) { // Caso seja POST
+            existingTask = repository.findByTaskName(task.getTaskName());
+        } else {
+            existingTask = repository.findByNameAndNotId(task.getTaskName(), task.getId());
+        }
+
+        if (existingTask.isPresent()) {
             throw new TaskNameAlreadyExists("Task name already exists");
         }
-        return repository.findByTaskName(taskName);
     }
 
     public void assertTaskExists(Long id) {
         findByIdOrThrowNotFound(id);
-    }
-
-    public void assertTaskNameExists(String taskName) {
-        findByNameOrThrowTaskNameAlreadyExits(taskName);
     }
 
     public void assertTaskCostPositive(Double cost) {
