@@ -30,3 +30,6 @@ server:
 
 endpoint:
   front: ${FRONT_END_ENDPOINT}
+api:
+  security:
+    secret: ${SECURITY_SECRET}

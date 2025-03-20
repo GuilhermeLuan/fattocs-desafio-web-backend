@@ -30,3 +30,6 @@ server:
 
 endpoint:
   front: http://localhost:5500
+api:
+  security:
+    secret: ${SECURITY_SECRET:secret}
