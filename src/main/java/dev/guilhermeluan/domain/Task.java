@@ -6,6 +6,7 @@ import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 
 import java.util.Date;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,5 +32,7 @@ public class Task {
     @Column(unique = true, nullable = false)
     private Integer presentationOrder;
 
+    @OneToMany(mappedBy = "task")
+    Set<UserHasTask> userHasTasks;
 }
 

@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,6 +29,9 @@ public class User implements UserDetails {
     private String password;
     @Column(nullable = false)
     private UserRole role;
+
+    @OneToMany(mappedBy = "user")
+    Set<UserHasTask> userHasTasks;
 
     public User(String email, String password, UserRole role) {
         this.email = email;
