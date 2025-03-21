@@ -5,6 +5,7 @@ import dev.guilhermeluan.domain.UserRole;
 import dev.guilhermeluan.dtos.AuthenticationDTO;
 import dev.guilhermeluan.dtos.RegisterDTO;
 import dev.guilhermeluan.repository.UserRepository;
+import dev.guilhermeluan.service.TokenService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,13 +23,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
+    private final TokenService tokenService;
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
-        return ResponseEntity.ok().build();
+        String token = tokenService.generateToken((User) auth.getPrincipal());
+
+        return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 
     @PostMapping("/register")
