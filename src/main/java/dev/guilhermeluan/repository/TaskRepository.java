@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TaskRepository extends JpaRepository<Task, Long> {
-    List<Task> findAllByOrderByPresentationOrder();
+    List<Task> findByUserId(Long userId);
 
     @Query("SELECT t FROM Task t WHERE t.taskName = :taskName AND t.id <> :id")
     Optional<Task> findByNameAndNotId(@Param("taskName") String taskName, @Param("id") Long id);

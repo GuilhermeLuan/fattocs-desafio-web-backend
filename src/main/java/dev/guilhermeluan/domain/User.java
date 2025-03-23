@@ -30,8 +30,8 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private UserRole role;
 
-    @OneToMany(mappedBy = "user")
-    Set<UserHasTask> userHasTasks;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    Set<Task> tasks;
 
     public User(String email, String password, UserRole role) {
         this.email = email;

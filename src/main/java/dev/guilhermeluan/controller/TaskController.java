@@ -15,12 +15,21 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @Tag(name = "Task", description = "Esta é uma API de gerenciamento de Tarefas desenvolvida com Spring")
 public interface TaskController {
+
+    ResponseEntity<List<TaskGetResponse>> findByUserId(@AuthenticationPrincipal UserDetails userDetails);
+
+
+
     @GetMapping
     @Operation(summary = "Retorna todas as Tarefas", description = "Retorna todas as Tarefas", tags = {"Task"}, responses = {
             @ApiResponse(description = "Success", responseCode = "200",

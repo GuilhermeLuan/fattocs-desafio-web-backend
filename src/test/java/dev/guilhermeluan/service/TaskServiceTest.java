@@ -49,7 +49,7 @@ class TaskServiceTest {
     @DisplayName("findAll returns a list of tasks")
     void findAll_ReturnsListOfTask_WhenSuccessful() {
         tasksList.sort(Comparator.comparingInt(Task::getPresentationOrder));
-        BDDMockito.when(repository.findAllByOrderByPresentationOrder()).thenReturn(tasksList);
+        BDDMockito.when(repository.findAll()).thenReturn(tasksList);
 
         var tasksFound = service.findAll();
         Assertions.assertThat(tasksFound).isNotNull().containsExactlyElementsOf(tasksList);

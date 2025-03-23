@@ -24,7 +24,7 @@ public class TaskService {
     private final EntityManager entityManager;
 
     public List<Task> findAll() {
-        return repository.findAllByOrderByPresentationOrder();
+        return repository.findAll();
     }
 
     public Task findByIdOrThrowNotFound(Long id) {

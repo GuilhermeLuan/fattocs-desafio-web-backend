@@ -31,8 +31,8 @@ public class Task {
     private Date dataLimit;
     @Column(unique = true, nullable = false)
     private Integer presentationOrder;
-
-    @OneToMany(mappedBy = "task")
-    Set<UserHasTask> userHasTasks;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }
 
