@@ -8,6 +8,7 @@ import dev.guilhermeluan.dtos.TaskPutRequest;
 import dev.guilhermeluan.repository.TaskRepository;
 import dev.guilhermeluan.repository.UserRepository;
 import dev.guilhermeluan.service.TaskService;
+import dev.guilhermeluan.service.UserService;
 import dev.guilhermeluan.utils.TaskMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ import java.util.List;
 @RequestMapping("/v1/tasks")
 public class TaskControllerImpl implements TaskController {
     private final TaskService service;
+    private final UserService userService;
     private final TaskMapper mapper;
 
     private final UserRepository userRepository;
@@ -33,11 +35,8 @@ public class TaskControllerImpl implements TaskController {
     @GetMapping("/user")
     @Override
     public ResponseEntity<List<TaskGetResponse>> findByUserId(@AuthenticationPrincipal UserDetails userDetails) {
-        if (userDetails == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+        Long userId = userService.findUserByEmailOrThrowNotFound(userDetails.getUsername()).getId();
 
-        Long userId = userRepository.findByEmail(userDetails.getUsername()).getId();
         List<Task> tasks = taskRepository.findByUserId(userId);
 
         List<TaskGetResponse> responses = mapper.toTaskGetResponse(tasks);
@@ -49,7 +48,7 @@ public class TaskControllerImpl implements TaskController {
     @PostMapping("/user")
     public ResponseEntity<TaskPostResponse> insertUserTask(@AuthenticationPrincipal UserDetails userDetails, @RequestBody TaskPostRequest request) {
         Task taskToSave = mapper.toTask(request);
-        taskToSave.setUser(userRepository.findByEmail(userDetails.getUsername()));
+        taskToSave.setUser(userService.findUserByEmailOrThrowNotFound(userDetails.getUsername()));
 
         Task taskSaved = service.save(taskToSave);
 
