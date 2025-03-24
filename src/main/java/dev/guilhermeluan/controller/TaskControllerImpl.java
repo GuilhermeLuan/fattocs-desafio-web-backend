@@ -45,20 +45,11 @@ public class TaskControllerImpl implements TaskController {
         return ResponseEntity.status(HttpStatus.OK).body(responses);
     }
 
-    @GetMapping()
     @Override
-    public ResponseEntity<List<TaskGetResponse>> findAll() {
-        List<Task> taskList = service.findAll();
-
-        List<TaskGetResponse> responses = mapper.toTaskGetResponse(taskList);
-
-        return ResponseEntity.status(HttpStatus.OK).body(responses);
-    }
-
-    @PostMapping
-    @Override
-    public ResponseEntity<TaskPostResponse> insert(@RequestBody @Valid TaskPostRequest request) {
+    @PostMapping("/user")
+    public ResponseEntity<TaskPostResponse> insertUserTask(@AuthenticationPrincipal UserDetails userDetails, @RequestBody TaskPostRequest request) {
         Task taskToSave = mapper.toTask(request);
+        taskToSave.setUser(userRepository.findByEmail(userDetails.getUsername()));
 
         Task taskSaved = service.save(taskToSave);
 

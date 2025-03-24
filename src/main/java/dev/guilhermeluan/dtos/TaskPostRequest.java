@@ -1,5 +1,6 @@
 package dev.guilhermeluan.dtos;
 
+import dev.guilhermeluan.domain.User;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -13,6 +14,8 @@ public record TaskPostRequest(
         @DecimalMax(value = "999999999999999.00", message = "The cost cannot be greater than 999999999999999.")
         Double cost,
         @NotNull(message = "The field 'dataLimit' is required")
-        Date dataLimit
+        Date dataLimit,
+        @NotNull
+        Integer user
 ) {
 }

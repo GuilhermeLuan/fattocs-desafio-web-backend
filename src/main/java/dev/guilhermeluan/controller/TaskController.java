@@ -26,25 +26,8 @@ import java.util.List;
 @Tag(name = "Task", description = "Esta é uma API de gerenciamento de Tarefas desenvolvida com Spring")
 public interface TaskController {
 
-    ResponseEntity<List<TaskGetResponse>> findByUserId(@AuthenticationPrincipal UserDetails userDetails);
-
-
-
     @GetMapping
-    @Operation(summary = "Retorna todas as Tarefas", description = "Retorna todas as Tarefas", tags = {"Task"}, responses = {
-            @ApiResponse(description = "Success", responseCode = "200",
-                    content = {
-                            @Content(
-                                    mediaType = "application/json",
-                                    array = @ArraySchema(schema = @Schema(implementation = Task.class))
-                            )
-                    }),
-            @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
-            @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
-            @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),
-    })
-
-    ResponseEntity<List<TaskGetResponse>> findAll();
+    ResponseEntity<List<TaskGetResponse>> findByUserId(@AuthenticationPrincipal UserDetails userDetails);
 
     @PostMapping
     @Operation(summary = "Adiciona uma nova Tarefa", description = "Adiciona uma nova Tarefa", tags = {"Task"}, responses = {
@@ -58,7 +41,7 @@ public interface TaskController {
             @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
             @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),
     })
-    ResponseEntity<TaskPostResponse> insert(@RequestBody @Valid TaskPostRequest request);
+    ResponseEntity<TaskPostResponse> insertUserTask(@AuthenticationPrincipal UserDetails userDetails, @RequestBody @Valid TaskPostRequest request);
 
     @PutMapping
     @Operation(summary = "Atualiza uma Tarefa", description = "Atualiza uma Tarefa", tags = {"Task"}, responses = {
