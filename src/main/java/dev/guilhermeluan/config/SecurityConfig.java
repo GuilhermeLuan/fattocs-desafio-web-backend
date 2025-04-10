@@ -1,5 +1,6 @@
 package dev.guilhermeluan.config;
 
+import dev.guilhermeluan.domain.User;
 import dev.guilhermeluan.infra.SecurityFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

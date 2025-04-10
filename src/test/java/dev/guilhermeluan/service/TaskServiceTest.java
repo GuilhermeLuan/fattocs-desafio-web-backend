@@ -42,19 +42,23 @@ class TaskServiceTest {
     }
 
     @Test
-    @DisplayName("findAll returns a list of tasks")
-    void findAll_ReturnsListOfTask_WhenSuccessful() {
-        tasksList.sort(Comparator.comparingInt(Task::getPresentationOrder));
-        BDDMockito.when(repository.findAll()).thenReturn(tasksList);
+    @DisplayName("findAllByUserId returns a list of tasks")
+    void findAllByUserId_ReturnsListOfTask_WhenSuccessful() {
+        var userId = 1L;
 
-        var tasksFound = service.findAll();
+        tasksList.sort(Comparator.comparingInt(Task::getPresentationOrder));
+        BDDMockito.when(repository.findByUserId(userId)).thenReturn(tasksList);
+
+        var tasksFound = service.findAllByUserId(userId);
         Assertions.assertThat(tasksFound).isNotNull().containsExactlyElementsOf(tasksList);
     }
 
     @Test
     @DisplayName("GET v1/tasks returns an empty list when no task is found")
     void findAll_ReturnsEmptyList_WhenNoTaskIsFound() {
-        var tasksFound = service.findAll();
+        var userId = 1L;
+
+        var tasksFound = service.findAllByUserId(userId);
         Assertions.assertThat(tasksFound).isNotNull().isEmpty();
     }
 

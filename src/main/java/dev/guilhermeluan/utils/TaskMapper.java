@@ -6,12 +6,14 @@ import dev.guilhermeluan.dtos.TaskPostRequest;
 import dev.guilhermeluan.dtos.TaskPostResponse;
 import dev.guilhermeluan.dtos.TaskPutRequest;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 
 import java.util.List;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface TaskMapper {
+    @Mapping(source = "user", target = "user.id")
     Task toTask(TaskPostRequest taskPostRequest);
 
     Task toTask(TaskPutRequest tarefaPutRequest);

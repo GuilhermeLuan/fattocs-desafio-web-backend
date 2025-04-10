@@ -1,6 +1,7 @@
 package dev.guilhermeluan.controller;
 
 import dev.guilhermeluan.domain.User;
+import dev.guilhermeluan.domain.UserRole;
 import dev.guilhermeluan.dtos.AuthenticationDTO;
 import dev.guilhermeluan.dtos.RegisterDTO;
 import dev.guilhermeluan.repository.UserRepository;
@@ -36,7 +37,7 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody @Valid RegisterDTO data) {
-        if (this.userRepository.findByEmail(data.login()) != null) return ResponseEntity.badRequest().build();
+        if(this.userRepository.findByEmail(data.login()) != null) return ResponseEntity.badRequest().build();
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
         User newUser = new User(data.login(), encryptedPassword, data.role());

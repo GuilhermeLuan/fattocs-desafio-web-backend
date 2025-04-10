@@ -32,7 +32,6 @@ public class TaskService {
         return repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Task name already exists"));
     }
-
     @Transactional
     public Task save(Task task) {
         assertTaskNameExists(task);
@@ -73,7 +72,7 @@ public class TaskService {
     }
 
     public void assertTaskCostPositive(Double cost) {
-        if (cost < 0) {
+        if(cost < 0){
             throw new TaskCostNegative("Task cost negative");
         }
     }

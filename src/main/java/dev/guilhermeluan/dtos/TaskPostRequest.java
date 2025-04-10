@@ -1,5 +1,6 @@
 package dev.guilhermeluan.dtos;
 
+import dev.guilhermeluan.domain.User;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
