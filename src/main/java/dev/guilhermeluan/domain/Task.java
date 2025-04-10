@@ -1,12 +1,10 @@
 package dev.guilhermeluan.domain;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 
 import java.util.Date;
-import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor

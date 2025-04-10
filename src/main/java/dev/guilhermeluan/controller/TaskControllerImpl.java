@@ -6,7 +6,6 @@ import dev.guilhermeluan.dtos.TaskPostRequest;
 import dev.guilhermeluan.dtos.TaskPostResponse;
 import dev.guilhermeluan.dtos.TaskPutRequest;
 import dev.guilhermeluan.repository.TaskRepository;
-import dev.guilhermeluan.repository.UserRepository;
 import dev.guilhermeluan.service.TaskService;
 import dev.guilhermeluan.service.UserService;
 import dev.guilhermeluan.utils.TaskMapper;
@@ -25,11 +24,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/tasks")
 public class TaskControllerImpl implements TaskController {
-    private final TaskService service;
+    private final TaskService taskService;
     private final UserService userService;
     private final TaskMapper mapper;
 
-    private final UserRepository userRepository;
     private final TaskRepository taskRepository;
 
     @GetMapping("/user")
@@ -37,9 +35,9 @@ public class TaskControllerImpl implements TaskController {
     public ResponseEntity<List<TaskGetResponse>> findByUserId(@AuthenticationPrincipal UserDetails userDetails) {
         Long userId = userService.findUserByEmailOrThrowNotFound(userDetails.getUsername()).getId();
 
-        List<Task> tasks = taskRepository.findByUserId(userId);
+        List<Task> taskList = taskService.findAllByUserId(userId);
 
-        List<TaskGetResponse> responses = mapper.toTaskGetResponse(tasks);
+        List<TaskGetResponse> responses = mapper.toTaskGetResponse(taskList);
 
         return ResponseEntity.status(HttpStatus.OK).body(responses);
     }
@@ -50,7 +48,7 @@ public class TaskControllerImpl implements TaskController {
         Task taskToSave = mapper.toTask(request);
         taskToSave.setUser(userService.findUserByEmailOrThrowNotFound(userDetails.getUsername()));
 
-        Task taskSaved = service.save(taskToSave);
+        Task taskSaved = taskService.save(taskToSave);
 
         TaskPostResponse response = mapper.toTaskPostResponse(taskSaved);
 
@@ -62,7 +60,7 @@ public class TaskControllerImpl implements TaskController {
     public ResponseEntity<Void> update(@RequestBody @Valid TaskPutRequest request) {
         Task taskToUpdate = mapper.toTask(request);
 
-        service.update(taskToUpdate);
+        taskService.update(taskToUpdate);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
@@ -70,7 +68,7 @@ public class TaskControllerImpl implements TaskController {
     @DeleteMapping("/{id}")
     @Override
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        service.delete(id);
+        taskService.delete(id);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

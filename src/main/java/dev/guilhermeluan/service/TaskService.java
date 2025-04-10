@@ -23,8 +23,9 @@ public class TaskService {
     @PersistenceContext
     private final EntityManager entityManager;
 
-    public List<Task> findAll() {
-        return repository.findAll();
+
+    public List<Task> findAllByUserId(Long userId) {
+        return repository.findByUserId(userId);
     }
 
     public Task findByIdOrThrowNotFound(Long id) {
@@ -72,7 +73,7 @@ public class TaskService {
     }
 
     public void assertTaskCostPositive(Double cost) {
-        if(cost < 0){
+        if (cost < 0) {
             throw new TaskCostNegative("Task cost negative");
         }
     }

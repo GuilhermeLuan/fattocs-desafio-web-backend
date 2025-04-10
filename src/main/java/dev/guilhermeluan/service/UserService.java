@@ -15,7 +15,7 @@ public class UserService {
     public User findUserByEmailOrThrowNotFound(String email) {
         User userFound = userRepository.findByEmail(email);
 
-        if(userFound == null) {
+        if (userFound == null) {
             throw new NotFoundException("User not found");
         }
         return userFound;

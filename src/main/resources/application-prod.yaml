@@ -4,16 +4,16 @@ spring:
   application:
     name: sistema-lista-tarefa
   datasource:
-      url: jdbc:mysql://${PROD_DB_HOST}:${PROD_DB_PORT}/${PROD_DB_NAME}?useTimezone=true&serverTimezone=UTC&createDatabaseIfNotExist=true
-      username: ${PROD_DB_USERNAME}
-      password: ${PROD_DB_PASSWORD}
+    url: jdbc:mysql://${PROD_DB_HOST}:${PROD_DB_PORT}/${PROD_DB_NAME}?useTimezone=true&serverTimezone=UTC&createDatabaseIfNotExist=true
+    username: ${PROD_DB_USERNAME}
+    password: ${PROD_DB_PASSWORD}
 
   jpa:
-      hibernate:
-        ddl-auto: update
+    hibernate:
+      ddl-auto: update
   threads:
-      virtual:
-        enabled: true
+    virtual:
+      enabled: true
 
 logging:
   level:

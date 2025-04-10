@@ -169,6 +169,7 @@ class TaskControllerImplTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(response));
     }
+
     @Test
     @DisplayName("POST v1/task returns bad request when cost are greater than 999999999999999")
     void save_ReturnsBadRequest_WhenCostAreGreaterThan999999999999999() throws Exception {
@@ -261,7 +262,7 @@ class TaskControllerImplTest {
         return Stream.of(
                 Arguments.of("put-request-task-empty-fields-400.json", allRequiredErrors),
                 Arguments.of("put-request-task-blank-fields-400.json", allRequiredErrors)
-                );
+        );
     }
 
     private static Stream<Arguments> postTaskBadRequestSource() {
@@ -270,7 +271,7 @@ class TaskControllerImplTest {
         return Stream.of(
                 Arguments.of("post-request-task-empty-fields-400.json", allRequiredErrors),
                 Arguments.of("post-request-task-blank-fields-400.json", allRequiredErrors)
-                );
+        );
     }
 
 
